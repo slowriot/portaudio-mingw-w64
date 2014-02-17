@@ -20,6 +20,7 @@ HEADERS += $$files(src/common/*.h)
 }
 
 mac {
+	QMAKE_CFLAGS += -DPA_USE_COREAUDIO
 	SOURCES += $$files(src/hostapi/coreaudio/*.c)
 	HEADERS += $$files(src/hostapi/coreaudio/*.h)
 	SOURCES -= src/hostapi/coreaudio/pa_mac_core_old.c
