@@ -19,7 +19,7 @@
             Robert Bielik
 */
 /*
- * $Id$
+ * $Id: paex_ocean_shore.c 1816 2012-02-22 12:20:26Z robiwan $
  *
  * This program uses the PortAudio Portable Audio Library.
  * For more information see: http://www.portaudio.com

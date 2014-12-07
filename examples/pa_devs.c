@@ -7,7 +7,7 @@
         ASIO support.
 */
 /*
- * $Id$
+ * $Id: pa_devs.c 1891 2013-05-05 14:00:02Z rbencina $
  *
  * This program uses the PortAudio Portable Audio Library.
  * For more information see: http://www.portaudio.com
@@ -107,7 +107,12 @@ int main(void)
     PaError err;
 
     
-    Pa_Initialize();
+    err = Pa_Initialize();
+    if( err != paNoError )
+    {
+        printf( "ERROR: Pa_Initialize returned 0x%x\n", err );
+        goto error;
+    }
 
     printf( "PortAudio version number = %d\nPortAudio version text = '%s'\n",
             Pa_GetVersion(), Pa_GetVersionText() );
@@ -242,7 +247,6 @@ int main(void)
 
 error:
     Pa_Terminate();
-    fprintf( stderr, "An error occured while using the portaudio stream\n" );
     fprintf( stderr, "Error number: %d\n", err );
     fprintf( stderr, "Error message: %s\n", Pa_GetErrorText( err ) );
     return err;
