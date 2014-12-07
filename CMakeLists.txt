@@ -330,6 +330,11 @@ IF(PA_USE_WDMKS)
 TARGET_LINK_LIBRARIES(portaudio setupapi)
 ENDIF(PA_USE_WDMKS)
 
+# If we use WMME on MinGW-w64 we need libwinmm.a
+IF(PA_USE_WMME)
+TARGET_LINK_LIBRARIES(portaudio winmm)
+ENDIF(PA_USE_WMME)
+
 SET_TARGET_PROPERTIES(portaudio PROPERTIES OUTPUT_NAME portaudio_${TARGET_POSTFIX}
                                 FOLDER "Portaudio")
 SET_TARGET_PROPERTIES(portaudio_static PROPERTIES OUTPUT_NAME portaudio_static_${TARGET_POSTFIX}
