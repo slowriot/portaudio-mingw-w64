@@ -27,20 +27,20 @@ namespace portaudio
 	//////
 	/// @brief Class which represents a PortAudio device in the System.
 	///
-	/// A single physical device in the system may have multiple PortAudio 
-	/// Device representations using different HostApi 's though. A Device 
-	/// can be half-duplex or full-duplex. A half-duplex Device can be used 
-	/// to create a half-duplex Stream. A full-duplex Device can be used to 
-	/// create a full-duplex Stream. If supported by the HostApi, two 
+	/// A single physical device in the system may have multiple PortAudio
+	/// Device representations using different HostApi 's though. A Device
+	/// can be half-duplex or full-duplex. A half-duplex Device can be used
+	/// to create a half-duplex Stream. A full-duplex Device can be used to
+	/// create a full-duplex Stream. If supported by the HostApi, two
 	/// half-duplex Devices can even be used to create a full-duplex Stream.
 	///
-	/// Note that Device objects are very light-weight and can be passed around 
+	/// Note that Device objects are very light-weight and can be passed around
 	/// by-value.
 	//////
 	class Device
 	{
 	public:
-		// query info: name, max in channels, max out channels, 
+		// query info: name, max in channels, max out channels,
 		// default low/hight input/output latency, default sample rate
 		PaDeviceIndex index() const;
 		const char *name() const;
@@ -60,8 +60,8 @@ namespace portaudio
 		bool isHostApiDefaultInputDevice() const; // extended
 		bool isHostApiDefaultOutputDevice() const; // extended
 
-		bool operator==(const Device &rhs);
-		bool operator!=(const Device &rhs);
+		bool operator==(const Device &rhs) const;
+		bool operator!=(const Device &rhs) const;
 
 		// host api reference
 		HostApi &hostApi();
@@ -73,7 +73,7 @@ namespace portaudio
 
 	private:
 		friend class System;
-		
+
 		explicit Device(PaDeviceIndex index);
 		~Device();
 
