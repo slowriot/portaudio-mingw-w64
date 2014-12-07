@@ -257,7 +257,6 @@ SET(PA_PLATFORM_SOURCES
   src/os/win/pa_win_waveformat.c
   src/os/win/pa_win_wdmks_utils.c
   src/os/win/pa_win_coinitialize.c
-  src/os/win/pa_x86_plain_converters.c
 )
 
 SOURCE_GROUP("os\\win" FILES
