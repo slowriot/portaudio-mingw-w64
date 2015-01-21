@@ -103,11 +103,11 @@ INCLUDE_DIRECTORIES(${ASIOSDK_ROOT_DIR}/host/pc)
 
 SET(PA_ASIO_INCLUDES
   include/pa_asio.h
-)
+)  
 
-SET(PA_ASIO_SOURCES
+SET(PA_ASIO_SOURCES 
   src/hostapi/asio/pa_asio.cpp
-)
+)  
 
 SET(PA_ASIOSDK_SOURCES
   ${ASIOSDK_ROOT_DIR}/common/asio.cpp
@@ -175,7 +175,6 @@ SOURCE_GROUP("hostapi\\wasapi" FILES
 ENDIF(PA_USE_WASAPI)
 
 IF(PA_USE_WDMKS)
-ADD_DEFINITIONS(-DPA_WDMKS_NO_KSGUID_LIB)
 
 SET(PA_WDMKS_INCLUDES
   include/pa_win_wdmks.h
@@ -194,12 +193,12 @@ SET(PA_SKELETON_SOURCES
   src/hostapi/skeleton/pa_hostapi_skeleton.c
 )
 
-SOURCE_GROUP("hostapi\\skeleton"
+SOURCE_GROUP("hostapi\\skeleton" 
   ${PA_SKELETON_SOURCES})
 
 #######################################
 IF(WIN32)
-SET(PA_INCLUDES
+SET(PA_INCLUDES 
   include/portaudio.h
   ${PA_ASIO_INCLUDES}
   ${PA_DS_INCLUDES}
@@ -254,7 +253,7 @@ SOURCE_GROUP("cmake_generated" FILES
 )
 
 IF(WIN32)
-SET(PA_PLATFORM_SOURCES
+SET(PA_PLATFORM_SOURCES 
   src/os/win/pa_win_hostapis.c
   src/os/win/pa_win_util.c
   src/os/win/pa_win_waveformat.c

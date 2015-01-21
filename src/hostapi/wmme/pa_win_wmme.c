@@ -1,5 +1,5 @@
 /*
- * $Id: pa_win_wmme.c 1926 2014-04-11 05:31:13Z rbencina $
+ * $Id: pa_win_wmme.c 1948 2015-01-21 06:52:11Z rbencina $
  * pa_win_wmme.c
  * Implementation of PortAudio for Windows MultiMedia Extensions (WMME)       
  *                                                                                         
@@ -86,6 +86,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <limits.h>
 #include <math.h>
 #include <windows.h>
 #include <mmsystem.h>
@@ -218,7 +219,22 @@ static char *CopyTCharStringToUtf8CString(char *destination, size_t destLengthBy
     Source: WideCharToMultiByte at MSDN:
     http://msdn.microsoft.com/en-us/library/windows/desktop/dd374130(v=vs.85).aspx
     */
-    if (WideCharToMultiByte(CP_UTF8, 0, source, -1, destination, (int)destLengthBytes, NULL, NULL) == 0)
+    int intDestLengthBytes; /* cbMultiByte */
+    /* intDestLengthBytes is an int, destLengthBytes is a size_t. Ensure that we don't overflow
+    intDestLengthBytes by only using at most INT_MAX bytes of destination buffer.
+    */
+    if (destLengthBytes < INT_MAX)
+    {
+#pragma warning (disable : 4267) /* "conversion from 'size_t' to 'int', possible loss of data" */
+        intDestLengthBytes = (int)destLengthBytes; /* destLengthBytes is guaranteed < INT_MAX here */
+#pragma warning (default : 4267)
+    }
+    else
+    {
+        intDestLengthBytes = INT_MAX;
+    }
+    
+    if (WideCharToMultiByte(CP_UTF8, 0, source, -1, destination, /*cbMultiByte=*/intDestLengthBytes, NULL, NULL) == 0)
         return NULL;
     return destination;
 #endif
@@ -917,6 +933,16 @@ error:
 
 static void GetDefaultLatencies( PaTime *defaultLowLatency, PaTime *defaultHighLatency )
 {
+/*
+NOTE: GetVersionEx() is deprecated as of Windows 8.1 and can not be used to reliably detect
+versions of Windows higher than Windows 8 (due to manifest requirements for reporting higher versions).
+Microsoft recommends switching to VerifyVersionInfo (available on Win 2k and later), however GetVersionEx
+is is faster, for now we just disable the deprecation warning.
+See: https://msdn.microsoft.com/en-us/library/windows/desktop/ms724451(v=vs.85).aspx
+See: http://www.codeproject.com/Articles/678606/Part-Overcoming-Windows-s-deprecation-of-GetVe
+*/
+#pragma warning (disable : 4996) /* use of GetVersionEx */
+
     OSVERSIONINFO osvi;
     osvi.dwOSVersionInfoSize = sizeof( osvi );
     GetVersionEx( &osvi );
@@ -936,6 +962,8 @@ static void GetDefaultLatencies( PaTime *defaultLowLatency, PaTime *defaultHighL
     }     
 
     *defaultHighLatency = *defaultLowLatency * 2;
+
+#pragma warning (default : 4996)
 }
 
 

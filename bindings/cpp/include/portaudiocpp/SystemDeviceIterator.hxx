@@ -23,12 +23,12 @@ namespace portaudio
 namespace portaudio
 {
 
-
+	
 	//////
 	/// @brief Iterator class for iterating through all Devices in a System.
 	///
-	/// Devices will be iterated by iterating all Devices in each
-	/// HostApi in the System. Compliant with the STL bidirectional
+	/// Devices will be iterated by iterating all Devices in each 
+	/// HostApi in the System. Compliant with the STL bidirectional 
 	/// iterator concept.
 	//////
 	class System::DeviceIterator
