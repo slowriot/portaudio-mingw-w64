@@ -7,7 +7,7 @@
 }
 
 TEMPLATE = lib
-CONFIG = staticlib
+CONFIG += staticlib
 
 INCLUDEPATH += include src/common
 SOURCES += $$files(src/common/*.c)
