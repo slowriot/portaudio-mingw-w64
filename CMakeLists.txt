@@ -64,9 +64,9 @@ ELSE(DXSDK_FOUND)
 OPTION(PA_USE_DS "Enable support for DirectSound" OFF)
 ENDIF(DXSDK_FOUND)
 OPTION(PA_USE_WMME "Enable support for MME" ON)
-OPTION(PA_USE_WASAPI "Enable support for WASAPI" ON)
-OPTION(PA_USE_WDMKS "Enable support for WDMKS" ON)
-OPTION(PA_USE_WDMKS_DEVICE_INFO "Use WDM/KS API for device info" ON)
+OPTION(PA_USE_WASAPI "Enable support for WASAPI" OFF)
+OPTION(PA_USE_WDMKS "Enable support for WDMKS" OFF)
+OPTION(PA_USE_WDMKS_DEVICE_INFO "Use WDM/KS API for device info" OFF)
 MARK_AS_ADVANCED(PA_USE_WDMKS_DEVICE_INFO)
 IF(PA_USE_DS)
 OPTION(PA_USE_DIRECTSOUNDFULLDUPLEXCREATE "Use DirectSound full duplex create" ON)
@@ -259,7 +259,6 @@ SET(PA_PLATFORM_SOURCES
   src/os/win/pa_win_waveformat.c
   src/os/win/pa_win_wdmks_utils.c
   src/os/win/pa_win_coinitialize.c
-  src/os/win/pa_x86_plain_converters.c
 )
 
 SOURCE_GROUP("os\\win" FILES
@@ -330,14 +329,25 @@ IF(PA_USE_WDMKS)
 TARGET_LINK_LIBRARIES(portaudio setupapi)
 ENDIF(PA_USE_WDMKS)
 
+# If we use WMME on MinGW-w64 we need libwinmm.a
+IF(PA_USE_WMME)
+TARGET_LINK_LIBRARIES(portaudio winmm)
+ENDIF(PA_USE_WMME)
+
 SET_TARGET_PROPERTIES(portaudio PROPERTIES OUTPUT_NAME portaudio_${TARGET_POSTFIX}
                                 FOLDER "Portaudio")
 SET_TARGET_PROPERTIES(portaudio_static PROPERTIES OUTPUT_NAME portaudio_static_${TARGET_POSTFIX}
                                 FOLDER "Portaudio")
 ENDIF(WIN32)
 
+OPTION(PA_BUILD_CXX "Include C++ bindings" OFF)
 OPTION(PA_BUILD_TESTS "Include test projects" OFF)
 OPTION(PA_BUILD_EXAMPLES "Include example projects" OFF)
+
+# Prepared for inclusion of C++ bindings
+IF(PA_BUILD_CXX)
+SUBDIRS(bindings/cpp)
+ENDIF(PA_BUILD_CXX)
 
 # Prepared for inclusion of test files
 IF(PA_BUILD_TESTS)
